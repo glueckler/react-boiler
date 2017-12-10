@@ -1,0 +1,7 @@
+.clear-fix {
+  @mixin clearfix;
+}
+
+.viewport {
+  min-height: 100vh;
+}
