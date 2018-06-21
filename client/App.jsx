@@ -1,9 +1,6 @@
 import React from "react";
+import Button from "components/Button";
 
-const App = () => (
-  <>
-    <div>My React App</div>
-  </>
-);
+const App = () => <Button>Click Here</Button>;
 
 export default App;

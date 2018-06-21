@@ -5,6 +5,7 @@ const webpack = require("webpack");
 
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const rootPath = resolve(__dirname);
 const distPath = resolve(__dirname, "dist");
@@ -37,13 +38,23 @@ const config = {
     rules: [
       {
         test: /\.jsx$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /(node_modules)/,
         use: {
           loader: "babel-loader",
           options: {
             presets: ["@babel/env"]
           }
         }
+      },
+      // TODO: asdf (dean) minify css for production builds
+      {
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          isDevelopment ? "style-loader" : MiniCssExtractPlugin.loader,
+          "css-loader",
+          // "postcss-loader",
+          // "sass-loader"
+        ]
       }
     ]
   },
@@ -57,6 +68,12 @@ const config = {
   plugins: [
     new webpack.EnvironmentPlugin(["NODE_ENV"]),
     new CleanWebpackPlugin(["dist"]),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    }),
     new HtmlWebpackPlugin({
       template: `${rootPath}/index.html`
     })
